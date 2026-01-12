@@ -3,6 +3,9 @@ package com.example.DATN.controller;
 import com.example.DATN.model.*;
 import com.example.DATN.repository.*;
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
@@ -21,22 +24,15 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/home")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class DatVeController {
-    private DatVeRepository datVeRepository;
-    private RapRepository rapRepository;
-    private CaChieuRepository caChieuRepository;
-    private GheRepository gheRepository;
-    private PhimRepository phimRepository;
-
-
-    @Autowired
-    public DatVeController(DatVeRepository datVeRepository, RapRepository rapRepository, CaChieuRepository caChieuRepository, GheRepository gheRepository, PhimRepository phimRepository ) {
-        this.datVeRepository = datVeRepository;
-        this.rapRepository = rapRepository;
-        this.caChieuRepository = caChieuRepository;
-        this.gheRepository = gheRepository;
-        this.phimRepository = phimRepository;
-    }
+    DatVeRepository datVeRepository;
+    RapRepository rapRepository;
+    CaChieuRepository caChieuRepository;
+    GheRepository gheRepository;
+    PhimRepository phimRepository;
+    
 
     @GetMapping("/datve")
     public String datve(Model model, @RequestParam("id") Integer id_Phim) {
@@ -48,7 +44,6 @@ public class DatVeController {
             return "error-page";
         }
 
-        // Lấy ngày hiện tại theo giờ VN
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         Date today = java.sql.Date.valueOf(localDate);
         System.out.println("Today's date: " + today);

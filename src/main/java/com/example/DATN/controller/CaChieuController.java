@@ -9,6 +9,9 @@ import com.example.DATN.repository.CaChieuRepository;
 import com.example.DATN.repository.NgayChieuRepository;
 import com.example.DATN.repository.PhimRepository;
 import com.example.DATN.repository.PhongChieuRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,18 +27,14 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/quantri")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class CaChieuController {
-    private CaChieuRepository caChieuRepository;
-    private PhongChieuRepository phongChieuRepository;
-    private PhimRepository phimRepository;
-    private NgayChieuRepository ngayChieuRepository;
-    @Autowired
-    public CaChieuController(CaChieuRepository caChieuRepository, PhongChieuRepository phongChieuRepository, PhimRepository phimRepository,NgayChieuRepository ngayChieuRepository) {
-        this.caChieuRepository = caChieuRepository;
-        this.phongChieuRepository = phongChieuRepository;
-        this.phimRepository = phimRepository;
-        this.ngayChieuRepository = ngayChieuRepository;
-    }
+    CaChieuRepository caChieuRepository;
+    PhongChieuRepository phongChieuRepository;
+    PhimRepository phimRepository;
+    NgayChieuRepository ngayChieuRepository;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Time.class, new CustomTimeEditor());

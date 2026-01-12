@@ -6,6 +6,9 @@ import com.example.DATN.model.Rap;
 import com.example.DATN.model.User;
 import com.example.DATN.repository.DatVeRepository;
 import com.example.DATN.repository.HoaDonRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -19,11 +22,11 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/quantri")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class HoaDonController {
-    @Autowired
-    private HoaDonRepository hoaDonRepository;
-    @Autowired
-    private DatVeRepository datVeRepository;
+   HoaDonRepository hoaDonRepository;
+   DatVeRepository datVeRepository;
 
     @GetMapping("/hoadon")
     public String showListHoaDon(Model model, @Param("key") String key){

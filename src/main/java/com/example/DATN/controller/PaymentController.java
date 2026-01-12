@@ -6,6 +6,8 @@ import com.example.DATN.repository.GheRepository;
 import com.example.DATN.repository.HoaDonRepository;
 import com.example.DATN.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,15 +23,16 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Controller
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentController {
-    @Autowired
-    private DatVeRepository datVeRepository;
-    @Autowired
-    private HoaDonRepository hoaDonRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private GheRepository gheRepository;
+    DatVeRepository datVeRepository;
+    HoaDonRepository hoaDonRepository;
+    UserRepository userRepository;
+    GheRepository gheRepository;
 
     @GetMapping("/thanhtoan")
     public String hinhthucthanhtoan(@RequestParam("id_datve") int idDatVe, Model model){
@@ -39,7 +42,7 @@ public class PaymentController {
         model.addAttribute("hoadon",hoaDon);
         model.addAttribute("idDatVe", datVe.getId());
         model.addAttribute("danhSachGhe", datVe.getDanhSachGhe());
-        double tongGia = datVe.tinhTongGia();  // Tính tổng giá
+        double tongGia = datVe.tinhTongGia();
         model.addAttribute("tongGia", tongGia);
 
         return "client/payment";
@@ -54,14 +57,15 @@ public class PaymentController {
         String username = principal.getName();
         User user = userRepository.findByUsername(username);
 
-        HoaDon hoaDon = new HoaDon();
-        hoaDon.setNgayLap(java.sql.Date.valueOf(LocalDate.now()));
-        hoaDon.setGioLap(Time.valueOf(LocalTime.now()));
-        hoaDon.setTongTien(amount);
-        hoaDon.setTrangThai(false);
-        hoaDon.setUser(user);
-        hoaDon.setDatVe(datVe);
-        hoaDon.setHttt(paymentMethod.equals("bankTransfer") ? "Chuyển khoản" : "Thanh toán tại quầy");
+        HoaDon hoaDon = HoaDon.builder()
+                .ngayLap(java.sql.Date.valueOf(LocalDate.now()))
+                .gioLap(Time.valueOf(LocalTime.now()))
+                .tongTien(amount)
+                .trangThai(false)
+                .user(user)
+                .datVe(datVe)
+                .httt(paymentMethod.equals("bankTransfer") ? "Chuyển khoản" : "Thanh toán tại quầy")
+                .build();
 
         HoaDon savedHoaDon = hoaDonRepository.save(hoaDon);
         return ResponseEntity.ok(savedHoaDon.getId());
@@ -76,7 +80,7 @@ public class PaymentController {
 
             // Cập nhật trạng thái của các ghế
             for (Ghe ghe : datVe.getDanhSachGhe()) {
-                ghe.setTrangThai(false);  // Đặt lại trạng thái ghế
+                ghe.setTrangThai(false);
                 ghe.setDatVe(null);  // Xóa liên kết với DatVe
                 gheRepository.saveAndFlush(ghe);  // Lưu lại trạng thái ghế
             }

@@ -3,10 +3,12 @@ package com.example.DATN.controller;
 import com.example.DATN.Service.UserService;
 import com.example.DATN.model.Role;
 import com.example.DATN.model.User;
-import com.example.DATN.model.UserDTO;
+import com.example.DATN.dto.UserDTO;
 import com.example.DATN.repository.RoleRepository;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,16 +25,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class LoginController {
 
-    private UserService userService;
-    private RoleRepository roleRepository;
-
-    @Autowired
-    public LoginController(UserService userService, RoleRepository roleRepository) {
-        this.userService = userService;
-        this.roleRepository = roleRepository;
-    }
+    UserService userService;
+    RoleRepository roleRepository;
 
     @GetMapping("/showloginpage")
     public String showLoginPage(){
@@ -66,15 +64,15 @@ public class LoginController {
             return "dangki";
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        User user = new User();
-        user.setFullName(userDTO.getFullName());
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setSdt(userDTO.getSdt());
-        user.setEmail(userDTO.getEmail());
-        user.setDiaChi(userDTO.getDiaChi());
-        user.setTrangThai(1);
-
+        User user = User.builder()
+                .fullName(userDTO.getFullName())
+                .username(userDTO.getUsername())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
+                .sdt(userDTO.getSdt())
+                .email(userDTO.getEmail())
+                .diaChi(userDTO.getDiaChi())
+                .trangThai(1)
+                .build();
         Role defausRole = roleRepository.findByName("ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
         roles.add(defausRole);

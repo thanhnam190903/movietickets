@@ -2,6 +2,9 @@ package com.example.DATN.controller;
 
 import com.example.DATN.model.NgayChieuS;
 import com.example.DATN.repository.NgayChieuRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -12,9 +15,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/quantri")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class NgayChieuController {
-    @Autowired
-    private NgayChieuRepository ngayChieuRepository;
+   NgayChieuRepository ngayChieuRepository;
 
     @GetMapping("/ngaychieu")
     public String showListNgayChieu(Model model, @Param("key") String key){

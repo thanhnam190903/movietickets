@@ -1,9 +1,8 @@
 package com.example.DATN.controller;
 
-import com.example.DATN.Service.UserService;
 import com.example.DATN.model.Role;
 import com.example.DATN.model.User;
-import com.example.DATN.model.UserDTO;
+import com.example.DATN.dto.UserDTO;
 import com.example.DATN.repository.RoleRepository;
 import com.example.DATN.repository.UserRepository;
 import jakarta.validation.Valid;

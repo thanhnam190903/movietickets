@@ -7,6 +7,9 @@ import com.example.DATN.repository.GheRepository;
 import com.example.DATN.repository.LoaiGheRepository;
 import com.example.DATN.repository.LoaiPhongRepository;
 import com.example.DATN.repository.PhongChieuRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,18 +23,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/quantri")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class GheController {
 
-    private GheRepository gheRepository;
-    private LoaiGheRepository loaiGheRepository;
-    private PhongChieuRepository phongChieuRepository;
-
-    @Autowired
-    public GheController(GheRepository gheRepository, LoaiGheRepository loaiGheRepository, PhongChieuRepository phongChieuRepository) {
-        this.gheRepository = gheRepository;
-        this.loaiGheRepository = loaiGheRepository;
-        this.phongChieuRepository = phongChieuRepository;
-    }
+    GheRepository gheRepository;
+    LoaiGheRepository loaiGheRepository;
+    PhongChieuRepository phongChieuRepository;
 
     @GetMapping("/ghe")
     public String showGhe(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String key) {

@@ -5,6 +5,9 @@ import com.example.DATN.model.Phim;
 import com.example.DATN.model.User;
 import com.example.DATN.repository.HoaDonRepository;
 import com.example.DATN.repository.PhimRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,13 +31,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/home")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class HomeController {
-    @Autowired
-    private PhimRepository phimRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private HoaDonRepository hoaDonRepository;
+    PhimRepository phimRepository;
+    UserRepository userRepository;
+    HoaDonRepository hoaDonRepository;
 
     @GetMapping()
     public String showHome(Model model){
@@ -99,10 +101,12 @@ public class HomeController {
             if (!passwordEncoder.matches(password, existingUser.getPassword())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect current password");
             }
-            existingUser.setFullName(user.getFullName());
-            existingUser.setUsername(user.getUsername());
-            existingUser.setSdt(user.getSdt());
-            existingUser.setDiaChi(user.getDiaChi());
+            existingUser = user.builder()
+                    .fullName(user.getFullName())
+                    .username(user.getUsername())
+                    .sdt(user.getSdt())
+                    .diaChi(user.getDiaChi())
+                    .build();
             User savedUser = userRepository.saveAndFlush(existingUser);
             return ResponseEntity.ok(savedUser);
         } else {
@@ -113,11 +117,13 @@ public class HomeController {
             if (!passnew.equals(restpass)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("New password and confirmation do not match");
             }
-            existingUser.setPassword(passwordEncoder.encode(passnew));
-            existingUser.setFullName(user.getFullName());
-            existingUser.setUsername(user.getUsername());
-            existingUser.setSdt(user.getSdt());
-            existingUser.setDiaChi(user.getDiaChi());
+            existingUser = user.builder()
+                    .password(passwordEncoder.encode(passnew))
+                    .fullName(user.getFullName())
+                    .username(user.getUsername())
+                    .sdt(user.getSdt())
+                    .diaChi(user.getDiaChi())
+                    .build();
             User savedUser = userRepository.saveAndFlush(existingUser);
             return ResponseEntity.ok(savedUser);
         }

@@ -1,59 +1,25 @@
 package com.example.DATN.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "raps")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Rap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    int id;
     @Column(name = "tenrap" , length = 150)
-    private String tenRap;
+    String tenRap;
     @Column(name = "diachi" , length = 150)
-    private String diaChi;
+    String diaChi;
     @Column(name = "trangthai")
-    private boolean trangThai;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTenRap() {
-        return tenRap;
-    }
-
-    public void setTenRap(String tenRap) {
-        this.tenRap = tenRap;
-    }
-
-    public String getDiaChi() {
-        return diaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
-    public boolean getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(boolean trangThai) {
-        this.trangThai = trangThai;
-    }
-
-    public Rap(String tenRap, String diaChi, boolean trangThai) {
-        this.tenRap = tenRap;
-        this.diaChi = diaChi;
-        this.trangThai = trangThai;
-    }
-
-    public Rap() {
-    }
+    boolean trangThai;
 }

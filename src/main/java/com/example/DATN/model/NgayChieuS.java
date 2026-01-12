@@ -1,44 +1,27 @@
 package com.example.DATN.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "ngaychieu")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class NgayChieuS {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    int id;
     @Column(name = "ngaychieu")
-    private Date ngayChieu;
+    LocalDate ngayChieu;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getNgayChieu() {
-        return ngayChieu;
-    }
-
-    public void setNgayChieu(Date ngayChieu) {
-        this.ngayChieu = ngayChieu;
-    }
-
-    public NgayChieuS(Date ngayChieu) {
-        this.ngayChieu = ngayChieu;
-    }
-
-    public NgayChieuS() {
-    }
-    public String getNgayChieuAsString() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(this.ngayChieu);
-    }
 }
