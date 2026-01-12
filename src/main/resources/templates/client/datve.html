@@ -19,14 +19,14 @@
             </div>
         </div>
         <div class="row g-4 justify-content-center">
-            <form th:action="@{/home/chonghe}" method="post">
+            <form th:action="@{/home/chonghe}" method="post" >
                 <!-- Các phần khác của form -->
                 <div class="form-group">
                     <h6>Chọn ngày</h6>
                     <hr>
                     <ul class="navbar nav-booking" style="list-style-type: none; justify-content: unset !important">
                         <li th:each="ngayChieu, index : ${dates}"
-                            th:value="${#dates.format(ngayChieu, 'dd-MM-yyyy')}"
+                            th:value="${#dates.format(ngayChieu, 'dd-MM-yyyy')} "
                             th:text="${#dates.format(ngayChieu, 'dd-MM-yyyy')}"
                             th:id="'date-' + ${#dates.format(ngayChieu, 'yyyy-MM-dd')}"
                             th:data-ngay="${#dates.format(ngayChieu, 'yyyy-MM-dd')}"
